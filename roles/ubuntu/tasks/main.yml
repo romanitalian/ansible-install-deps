@@ -1,0 +1,261 @@
+---
+# Update apt cache
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  become: yes
+
+# Install required packages
+- name: Install required packages
+  apt:
+    name:
+      - software-properties-common
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - git
+      - python3-pip
+      - python3-venv
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - python3-dev
+    state: present
+  become: yes
+
+# Add package repositories
+- name: Add package repositories
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    update_cache: yes
+  with_items: "{{ package_repositories }}"
+  become: yes
+
+# Install PHP 8.x
+- name: Install PHP 8.x
+  apt:
+    name:
+      - php8.2
+      - php8.2-cli
+      - php8.2-common
+      - php8.2-curl
+      - php8.2-mbstring
+      - php8.2-xml
+      - php8.2-zip
+      - php8.2-mysql
+      - php8.2-pgsql
+      - php8.2-sqlite3
+    state: present
+  become: yes
+
+# Install Composer
+- name: Install Composer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/composer-setup.php
+  become: yes
+
+- name: Verify Composer installer
+  command: php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === 'e21205b207c3ff031906575712edab6f13eb0b361f2085f1f1237b7126d785e826a450292b6cfd1d64d92e6563bbde02') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } exit(1);"
+  register: composer_verify
+  changed_when: false
+  become: yes
+
+- name: Install Composer globally
+  command: php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+  when: composer_verify.rc == 0
+  become: yes
+
+- name: Remove Composer installer
+  file:
+    path: /tmp/composer-setup.php
+    state: absent
+  become: yes
+
+# Install Go
+- name: Download Go
+  get_url:
+    url: https://go.dev/dl/go1.22.1.linux-amd64.tar.gz
+    dest: /tmp/go.tar.gz
+  become: yes
+
+- name: Extract Go
+  unarchive:
+    src: /tmp/go.tar.gz
+    dest: "{{ go_install_path }}"
+    remote_src: yes
+  become: yes
+
+- name: Set Go environment variables
+  lineinfile:
+    path: /etc/profile.d/go.sh
+    line: "{{ item }}"
+    create: yes
+  with_items:
+    - 'export PATH=$PATH:{{ go_install_path }}/go/bin'
+    - 'export GOPATH=$HOME/go'
+    - 'export PATH=$PATH:$GOPATH/bin'
+  become: yes
+
+# Install Go tools
+- name: Install Go tools
+  command: "{{ item }}"
+  with_items:
+    - go install golang.org/x/tools/gopls@latest
+    - go install mvdan.cc/gofumpt@latest
+    - go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+# Install Python packages
+- name: Install Python packages
+  pip:
+    name:
+      - virtualenv
+      - pre-commit
+      - yt-dlp
+    state: present
+  become: yes
+
+# Install databases
+- name: Install MySQL
+  apt:
+    name: mysql-server-5.7
+    state: present
+  become: yes
+
+- name: Install MariaDB
+  apt:
+    name: mariadb-server
+    state: present
+  become: yes
+
+- name: Install PostgreSQL
+  apt:
+    name: postgresql-17
+    state: present
+  become: yes
+
+- name: Install Redis
+  apt:
+    name: redis-server
+    state: present
+  become: yes
+
+- name: Install ClickHouse
+  apt:
+    name: clickhouse-server
+    state: present
+  become: yes
+
+# Install message brokers
+- name: Install RabbitMQ
+  apt:
+    name: rabbitmq-server
+    state: present
+  become: yes
+
+- name: Install NATS
+  apt:
+    name: nats-server
+    state: present
+  become: yes
+
+# Install system tools
+- name: Install system tools
+  apt:
+    name:
+      - btop
+      - curl
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: present
+  become: yes
+
+# Install IDEs and editors
+- name: Download Sublime Text
+  get_url:
+    url: https://download.sublimetext.com/sublime_text_build_4169_x64.tar.bz2
+    dest: /tmp/sublime.tar.bz2
+  become: yes
+
+- name: Extract Sublime Text
+  unarchive:
+    src: /tmp/sublime.tar.bz2
+    dest: /opt
+    remote_src: yes
+  become: yes
+
+- name: Create Sublime Text symlink
+  file:
+    src: "{{ sublime_text_path }}/sublime_text"
+    dest: /usr/local/bin/subl
+    state: link
+  become: yes
+
+- name: Download DBeaver
+  get_url:
+    url: https://dbeaver.io/files/dbeaver-ce-latest-linux.gtk.x86_64.tar.gz
+    dest: /tmp/dbeaver.tar.gz
+  become: yes
+
+- name: Extract DBeaver
+  unarchive:
+    src: /tmp/dbeaver.tar.gz
+    dest: /opt
+    remote_src: yes
+  become: yes
+
+- name: Create DBeaver symlink
+  file:
+    src: "{{ dbeaver_path }}/dbeaver"
+    dest: /usr/local/bin/dbeaver
+    state: link
+  become: yes
+
+# Install desktop applications
+- name: Download and install desktop applications
+  apt:
+    deb: "{{ item.url }}"
+    state: present
+  with_items: "{{ desktop_apps }}"
+  become: yes
+
+# Install Postman
+- name: Download Postman
+  get_url:
+    url: https://dl.pstmn.io/download/latest/linux64
+    dest: /tmp/postman.tar.gz
+  become: yes
+
+- name: Extract Postman
+  unarchive:
+    src: /tmp/postman.tar.gz
+    dest: /opt
+    remote_src: yes
+  become: yes
+
+- name: Create Postman symlink
+  file:
+    src: "{{ postman_path }}/Postman"
+    dest: /usr/local/bin/postman
+    state: link
+  become: yes
+
+# Clean up temporary files
+- name: Clean up temporary files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /tmp/go.tar.gz
+    - /tmp/sublime.tar.bz2
+    - /tmp/dbeaver.tar.gz
+    - /tmp/postman.tar.gz
+  become: yes 

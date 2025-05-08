@@ -1,0 +1,35 @@
+---
+# Ubuntu specific variables
+ansible_python_interpreter: /usr/bin/python3
+
+# System paths
+go_install_path: /usr/local
+sublime_text_path: /opt/sublime_text
+dbeaver_path: /opt/dbeaver
+postman_path: /opt/Postman
+
+# Package repositories
+package_repositories:
+  - name: php
+    repo: ppa:ondrej/php
+  - name: redis
+    repo: ppa:redislabs/redis
+  - name: postgresql
+    repo: "deb http://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
+  - name: docker
+    repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
+  - name: clickhouse
+    repo: "deb https://packages.clickhouse.com/deb stable main"
+
+# Desktop applications
+desktop_apps:
+  - name: google-chrome
+    url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - name: openvpn-connect
+    url: https://swupdate.openvpn.net/community/openvpn-connect-latest.deb
+  - name: zoom
+    url: https://zoom.us/client/latest/zoom_amd64.deb
+  - name: mattermost
+    url: https://releases.mattermost.com/desktop/5.0.0/mattermost-desktop-5.0.0-linux-amd64.deb
+  - name: slack
+    url: https://downloads.slack-edge.com/releases/linux/4.35.126/prod/amd64/slack-desktop-4.35.126-amd64.deb 
