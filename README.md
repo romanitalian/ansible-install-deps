@@ -58,6 +58,8 @@ This Ansible playbook automates the installation of development tools and softwa
   - golangci-lint (Go linter)
 - PHP 8.x
 - Python 3
+- Node.js & npm
+- Rust
 - Protobuf
 - SQLite
 - Composer (PHP)
@@ -71,12 +73,36 @@ This Ansible playbook automates the installation of development tools and softwa
 - pre-commit
 - yt-dlp
 
+### Terminal Tools
+- tmux (terminal multiplexer)
+- htop (process viewer)
+- ncdu (disk usage analyzer)
+- bat (better cat)
+- fd (better find)
+- exa (better ls)
+- fzf (fuzzy finder)
+- zsh & oh-my-zsh
+- lazygit (git TUI)
+
+### Network Tools
+- net-tools
+- nmap
+- tcpdump
+- wireshark
+- mtr
+
 ### Databases
 - MySQL 5.7
 - MariaDB
 - PostgreSQL 17
 - Redis
 - ClickHouse
+
+### Database Clients
+- mycli (MySQL client)
+- pgcli (PostgreSQL client)
+- redis-cli
+- clickhouse-client
 
 ### Message Brokers
 - RabbitMQ
@@ -87,6 +113,9 @@ This Ansible playbook automates the installation of development tools and softwa
 - curl
 - Docker
 - Docker Compose
+- Podman
+- Buildah
+- Skopeo
 
 ### IDEs and Editors
 - Sublime Text 3
@@ -103,6 +132,30 @@ This Ansible playbook automates the installation of development tools and softwa
 
 ### Development Tools
 - Postman
+- kubectl
+- Helm
+- gRPCurl
+
+### Security Tools
+- GPG
+- OpenSSL
+- Certbot
+
+### Monitoring Tools
+- Prometheus
+- Grafana
+- Telegraf
+
+### Testing Tools
+- k6
+- Locust
+- Vegeta
+- wrk
+
+### Documentation Tools
+- Asciidoctor
+- PlantUML
+- Graphviz
 
 ### Package Managers
 - Homebrew (macOS only)

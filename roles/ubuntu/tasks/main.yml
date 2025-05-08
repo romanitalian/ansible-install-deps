@@ -35,6 +35,20 @@
   with_items: "{{ package_repositories }}"
   become: yes
 
+# Install development tools
+- name: Install development tools
+  apt:
+    name: "{{ dev_tools }}"
+    state: present
+  become: yes
+
+# Install database clients
+- name: Install database clients
+  apt:
+    name: "{{ db_clients }}"
+    state: present
+  become: yes
+
 # Install PHP 8.x
 - name: Install PHP 8.x
   apt:
@@ -118,6 +132,7 @@
       - virtualenv
       - pre-commit
       - yt-dlp
+      - locust
     state: present
   become: yes
 
@@ -248,6 +263,34 @@
     state: link
   become: yes
 
+# Install oh-my-zsh
+- name: Install oh-my-zsh
+  shell: |
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+# Install lazygit
+- name: Download lazygit
+  get_url:
+    url: https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ ansible_architecture }}-Linux.tar.gz
+    dest: /tmp/lazygit.tar.gz
+  become: yes
+
+- name: Extract lazygit
+  unarchive:
+    src: /tmp/lazygit.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+  become: yes
+
+# Install wrk
+- name: Install wrk
+  apt:
+    name: wrk
+    state: present
+  become: yes
+
 # Clean up temporary files
 - name: Clean up temporary files
   file:
@@ -258,4 +301,5 @@
     - /tmp/sublime.tar.bz2
     - /tmp/dbeaver.tar.gz
     - /tmp/postman.tar.gz
+    - /tmp/lazygit.tar.gz
   become: yes 

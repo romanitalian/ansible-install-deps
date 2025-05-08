@@ -20,6 +20,22 @@ package_repositories:
     repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
   - name: clickhouse
     repo: "deb https://packages.clickhouse.com/deb stable main"
+  - name: kubernetes
+    repo: "deb [signed-by=/usr/share/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /"
+  - name: helm
+    repo: "deb [signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main"
+  - name: prometheus
+    repo: "deb [signed-by=/usr/share/keyrings/prometheus-apt-keyring.gpg] https://apt.grafana.com stable main"
+  - name: grafana
+    repo: "deb [signed-by=/usr/share/keyrings/grafana-apt-keyring.gpg] https://apt.grafana.com stable main"
+  - name: telegraf
+    repo: "deb [signed-by=/usr/share/keyrings/influxdata-archive-keyring.gpg] https://repos.influxdata.com/debian stable main"
+  - name: k6
+    repo: "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main"
+  - name: nodejs
+    repo: "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main"
+  - name: rust
+    repo: "deb [signed-by=/usr/share/keyrings/rust-archive-keyring.gpg] https://deb.nodesource.com/rust_1.75.0 stable main"
 
 # Desktop applications
 desktop_apps:
@@ -32,4 +48,53 @@ desktop_apps:
   - name: mattermost
     url: https://releases.mattermost.com/desktop/5.0.0/mattermost-desktop-5.0.0-linux-amd64.deb
   - name: slack
-    url: https://downloads.slack-edge.com/releases/linux/4.35.126/prod/amd64/slack-desktop-4.35.126-amd64.deb 
+    url: https://downloads.slack-edge.com/releases/linux/4.35.126/prod/amd64/slack-desktop-4.35.126-amd64.deb
+
+# Development tools
+dev_tools:
+  - tmux
+  - htop
+  - ncdu
+  - jq
+  - yq
+  - bat
+  - fd-find
+  - exa
+  - fzf
+  - zsh
+  - lazygit
+  - net-tools
+  - nmap
+  - tcpdump
+  - wireshark
+  - mtr
+  - nodejs
+  - npm
+  - rust
+  - protobuf-compiler
+  - grpcurl
+  - kubectl
+  - helm
+  - gpg
+  - openssl
+  - certbot
+  - prometheus
+  - grafana
+  - telegraf
+  - k6
+  - locust
+  - vegeta
+  - wrk
+  - asciidoctor
+  - plantuml
+  - graphviz
+  - podman
+  - buildah
+  - skopeo
+
+# Database clients
+db_clients:
+  - mycli
+  - pgcli
+  - redis-tools
+  - clickhouse-client 
