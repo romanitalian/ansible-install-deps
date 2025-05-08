@@ -15,31 +15,31 @@ This Ansible playbook automates the installation of development tools and softwa
 
 1. Clone this repository
 2. Edit `inventory.ini`:
-   - Для локальной установки: оставьте как есть (127.0.0.1)
-   - Для удаленной установки: раскомментируйте и укажите IP-адрес целевого компьютера
-3. Для удаленной установки настройте SSH:
+   - For local installation: leave as is (127.0.0.1)
+   - For remote installation: uncomment and specify the target computer's IP address
+3. For remote installation, configure SSH:
    ```bash
-   # Генерация SSH ключа если его нет
+   # Generate SSH key if not exists
    ssh-keygen -t rsa -b 4096
    
-   # Копирование ключа на целевой компьютер
+   # Copy key to target computer
    ssh-copy-id username@192.168.0.74
    ```
-4. Используйте Makefile для установки:
+4. Use Makefile for installation:
    ```bash
-   # Проверка установки Ansible
+   # Check Ansible installation
    make check-ansible
 
-   # Проверка SSH соединения (для удаленной установки)
+   # Check SSH connection (for remote installation)
    make check-ssh
 
-   # Локальная установка
+   # Local installation
    make install-local
 
-   # Удаленная установка
+   # Remote installation
    make install-remote
 
-   # Очистка временных файлов
+   # Clean temporary files
    make clean
    ```
 
