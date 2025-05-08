@@ -36,4 +36,21 @@
     - role: ides_editors
     - role: browsers
     - role: communication_tools
-    - role: development_apps 
+    - role: development_apps
+
+- name: Install development environment
+  hosts: all
+  become: yes
+  tasks:
+    - name: Include OS-specific tasks
+      include_tasks: "roles/{{ ansible_os_family | lower }}/tasks/main.yml"
+      when: ansible_os_family in ['Darwin', 'Debian']
+      ignore_errors: yes
+
+    - name: Include Raspberry Pi specific tasks
+      include_tasks: roles/raspberry/tasks/main.yml
+      when: ansible_os_family == 'Debian' and ansible_architecture == 'aarch64'
+
+    - name: Include Ubuntu specific tasks
+      include_tasks: roles/ubuntu/tasks/main.yml
+      when: ansible_os_family == 'Debian' and ansible_distribution == 'Ubuntu' 
