@@ -1,0 +1,29 @@
+---
+# macOS specific variables
+ansible_python_interpreter: /usr/bin/python3
+
+# Homebrew paths
+homebrew_prefix: /opt/homebrew
+homebrew_bin: "{{ homebrew_prefix }}/bin"
+homebrew_etc: "{{ homebrew_prefix }}/etc"
+
+# Go paths for macOS
+go_install_path: "{{ homebrew_prefix }}"
+
+# Application paths
+sublime_text_path: /Applications/Sublime Text.app
+dbeaver_path: /Applications/DBeaver.app
+postman_path: /Applications/Postman.app
+
+# Desktop applications
+desktop_apps:
+  - name: google-chrome
+    url: https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg
+  - name: openvpn-connect
+    url: https://swupdate.openvpn.net/community/openvpn-connect-latest.dmg
+  - name: zoom
+    url: https://zoom.us/client/latest/Zoom.pkg
+  - name: mattermost
+    url: https://releases.mattermost.com/desktop/5.0.0/mattermost-desktop-5.0.0-mac.dmg
+  - name: slack
+    url: https://downloads.slack-edge.com/releases/macos/4.35.126/prod/universal/Slack-4.35.126-macOS.dmg 

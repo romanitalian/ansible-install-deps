@@ -1,0 +1,66 @@
+---
+- name: Install Sublime Text
+  block:
+    - name: Download Sublime Text
+      get_url:
+        url: "{{ sublime_text_url }}"
+        dest: "/tmp/sublime_text.tar.bz2"
+      when: ansible_os_family == "Debian"
+
+    - name: Extract Sublime Text
+      unarchive:
+        src: "/tmp/sublime_text.tar.bz2"
+        dest: "{{ sublime_text_path }}"
+        remote_src: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Create Sublime Text desktop entry
+      copy:
+        content: |
+          [Desktop Entry]
+          Version=1.0
+          Type=Application
+          Name=Sublime Text
+          Comment=Sophisticated text editor for code, markup and prose
+          Exec={{ sublime_text_path }}/sublime_text %F
+          Terminal=false
+          MimeType=text/plain;
+          Icon={{ sublime_text_path }}/Icon/48x48/sublime-text.png
+          Categories=TextEditor;Development;
+          StartupNotify=true
+        dest: "/usr/share/applications/sublime_text.desktop"
+        mode: '0644'
+      when: ansible_os_family == "Debian"
+
+- name: Install DBeaver
+  block:
+    - name: Download DBeaver
+      get_url:
+        url: "{{ dbeaver_url }}"
+        dest: "/tmp/dbeaver.tar.gz"
+      when: ansible_os_family == "Debian"
+
+    - name: Extract DBeaver
+      unarchive:
+        src: "/tmp/dbeaver.tar.gz"
+        dest: "{{ dbeaver_path }}"
+        remote_src: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Create DBeaver desktop entry
+      copy:
+        content: |
+          [Desktop Entry]
+          Version=1.0
+          Type=Application
+          Name=DBeaver
+          Comment=Universal Database Tool
+          Exec={{ dbeaver_path }}/dbeaver
+          Terminal=false
+          MimeType=application/x-sql;
+          Icon={{ dbeaver_path }}/dbeaver.png
+          Categories=Development;Database;
+          StartupNotify=true
+        dest: "/usr/share/applications/dbeaver.desktop"
+        mode: '0644'
+      when: ansible_os_family == "Debian" 

@@ -1,0 +1,60 @@
+# JetBrains
+.idea/
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets.history/
+*.vsix
+
+# Environment Variables
+.env
+
+# Docker Compose Overrides
+./deployments/docker-compose.override.yaml
+./deploy/docker-compose.override.yaml
+
+# Ansible
+*.retry
+*.pyc
+__pycache__/
+.ansible/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Temporary files
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# Logs
+*.log
+logs/
+log/
+
+# Cache
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Dependencies
+node_modules/
+vendor/
+.venv/
+venv/
+ENV/
+
+# Build
+dist/
+build/
+*.egg-info/

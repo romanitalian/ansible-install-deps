@@ -1,0 +1,14 @@
+---
+- name: Install Google Chrome
+  block:
+    - name: Download Google Chrome
+      get_url:
+        url: "{{ google_chrome_url }}"
+        dest: "/tmp/google-chrome.deb"
+      when: ansible_os_family == "Debian"
+
+    - name: Install Google Chrome
+      apt:
+        deb: "/tmp/google-chrome.deb"
+        state: present
+      when: ansible_os_family == "Debian" 

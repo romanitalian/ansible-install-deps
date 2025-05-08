@@ -1,0 +1,56 @@
+---
+- name: Install OpenVPN Connect
+  block:
+    - name: Download OpenVPN Connect
+      get_url:
+        url: https://swupdate.openvpn.net/community/openvpn-connect-latest.deb
+        dest: "/tmp/openvpn-connect.deb"
+      when: ansible_os_family == "Debian"
+
+    - name: Install OpenVPN Connect
+      apt:
+        deb: "/tmp/openvpn-connect.deb"
+        state: present
+      when: ansible_os_family == "Debian"
+
+- name: Install Zoom
+  block:
+    - name: Download Zoom
+      get_url:
+        url: https://zoom.us/client/latest/zoom_amd64.deb
+        dest: "/tmp/zoom.deb"
+      when: ansible_os_family == "Debian"
+
+    - name: Install Zoom
+      apt:
+        deb: "/tmp/zoom.deb"
+        state: present
+      when: ansible_os_family == "Debian"
+
+- name: Install Mattermost
+  block:
+    - name: Download Mattermost
+      get_url:
+        url: https://releases.mattermost.com/desktop/5.0.0/mattermost-desktop-5.0.0-linux-amd64.deb
+        dest: "/tmp/mattermost.deb"
+      when: ansible_os_family == "Debian"
+
+    - name: Install Mattermost
+      apt:
+        deb: "/tmp/mattermost.deb"
+        state: present
+      when: ansible_os_family == "Debian"
+
+- name: Install Slack
+  block:
+    - name: Download Slack
+      get_url:
+        url: https://downloads.slack-edge.com/releases/linux/4.35.126/prod/x64/slack-desktop-4.35.126-amd64.deb
+        dest: "/tmp/slack.deb"
+      when: ansible_os_family == "Debian"
+
+    - name: Install Slack
+      apt:
+        deb: "/tmp/slack.deb"
+        state: present
+      when: ansible_os_family == "Debian" 

@@ -1,0 +1,33 @@
+---
+- name: Install Postman
+  block:
+    - name: Download Postman
+      get_url:
+        url: "{{ postman_url }}"
+        dest: "/tmp/postman.tar.gz"
+      when: ansible_os_family == "Debian"
+
+    - name: Extract Postman
+      unarchive:
+        src: "/tmp/postman.tar.gz"
+        dest: "/opt"
+        remote_src: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Create Postman desktop entry
+      copy:
+        content: |
+          [Desktop Entry]
+          Version=1.0
+          Type=Application
+          Name=Postman
+          Comment=API Development Environment
+          Exec=/opt/Postman/Postman
+          Terminal=false
+          MimeType=application/x-postman-collection;
+          Icon=/opt/Postman/app/resources/app/assets/icon.png
+          Categories=Development;WebDevelopment;
+          StartupNotify=true
+        dest: "/usr/share/applications/postman.desktop"
+        mode: '0644'
+      when: ansible_os_family == "Debian" 

@@ -1,0 +1,39 @@
+---
+- name: Setup Developer Environment
+  hosts: localhost
+  become: yes
+  gather_facts: yes
+
+  pre_tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+
+    - name: Install required packages
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - python3-pip
+        - python3-venv
+        - git
+        - curl
+        - wget
+        - gnupg
+        - software-properties-common
+        - apt-transport-https
+        - ca-certificates
+      when: ansible_os_family == "Debian"
+
+  roles:
+    - role: package_manager
+    - role: development_tools
+    - role: databases
+    - role: message_brokers
+    - role: system_tools
+    - role: ides_editors
+    - role: browsers
+    - role: communication_tools
+    - role: development_apps 

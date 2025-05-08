@@ -1,0 +1,66 @@
+---
+- name: Install RabbitMQ
+  block:
+    - name: Add RabbitMQ repository
+      apt_repository:
+        repo: "deb https://dl.bintray.com/rabbitmq/debian {{ ansible_distribution_release }} main"
+        state: present
+        filename: rabbitmq
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install RabbitMQ
+      apt:
+        name: rabbitmq-server
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start RabbitMQ service
+      service:
+        name: rabbitmq-server
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Enable RabbitMQ management plugin
+      shell: rabbitmq-plugins enable rabbitmq_management
+      args:
+        creates: /etc/rabbitmq/enabled_plugins
+      when: ansible_os_family == "Debian"
+
+- name: Install NATS
+  block:
+    - name: Download NATS server
+      get_url:
+        url: "https://github.com/nats-io/nats-server/releases/download/v{{ nats_version }}/nats-server-v{{ nats_version }}-linux-amd64.tar.gz"
+        dest: "/tmp/nats-server.tar.gz"
+      when: ansible_os_family == "Debian"
+
+    - name: Extract NATS server
+      unarchive:
+        src: "/tmp/nats-server.tar.gz"
+        dest: "/tmp"
+        remote_src: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install NATS server
+      copy:
+        src: "/tmp/nats-server-v{{ nats_version }}-linux-amd64/nats-server"
+        dest: "/usr/local/bin/nats-server"
+        mode: '0755'
+      when: ansible_os_family == "Debian"
+
+    - name: Create NATS systemd service
+      template:
+        src: nats.service.j2
+        dest: /etc/systemd/system/nats.service
+        mode: '0644'
+      when: ansible_os_family == "Debian"
+
+    - name: Start NATS service
+      systemd:
+        name: nats
+        state: started
+        enabled: yes
+        daemon_reload: yes
+      when: ansible_os_family == "Debian" 

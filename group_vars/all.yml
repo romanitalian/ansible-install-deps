@@ -1,0 +1,57 @@
+---
+# PHP Configuration
+php_version: "8.2"
+php_extensions:
+  - php{{ php_version }}-cli
+  - php{{ php_version }}-common
+  - php{{ php_version }}-curl
+  - php{{ php_version }}-mbstring
+  - php{{ php_version }}-xml
+  - php{{ php_version }}-zip
+  - php{{ php_version }}-mysql
+  - php{{ php_version }}-pgsql
+  - php{{ php_version }}-sqlite3
+  - php{{ php_version }}-gd
+  - php{{ php_version }}-intl
+
+# Go Configuration
+go_version: "1.22.0"
+go_install_path: "/usr/local"
+
+# Python Configuration
+python_version: "3.11"
+virtualenv_path: "~/.virtualenvs"
+
+# Database Configuration
+mysql_version: "5.7"
+postgresql_version: "17"
+mariadb_version: "10.11"
+
+# Docker Configuration
+docker_compose_version: "v2.24.6"
+
+# NATS Configuration
+nats_version: "2.10.11"
+
+# Redis Configuration
+redis_version: "7.2"
+
+# RabbitMQ Configuration
+rabbitmq_version: "3.12"
+
+# ClickHouse Configuration
+clickhouse_version: "23.8"
+
+# Package URLs
+sublime_text_url: "https://download.sublimetext.com/sublime_text_3_build_3211_x64.tar.bz2"
+google_chrome_url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+postman_url: "https://dl.pstmn.io/download/latest/linux64"
+dbeaver_url: "https://dbeaver.io/files/dbeaver-ce-latest-linux.gtk.x86_64.tar.gz"
+
+# Installation Paths
+sublime_text_path: "/opt/sublime_text"
+dbeaver_path: "/opt/dbeaver"
+
+# User Configuration
+user_name: "{{ ansible_user_id }}"
+user_home: "{{ ansible_env.HOME }}" 

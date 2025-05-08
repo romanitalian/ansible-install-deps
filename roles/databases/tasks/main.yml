@@ -1,0 +1,114 @@
+---
+- name: Install MySQL
+  block:
+    - name: Add MySQL repository
+      apt_repository:
+        repo: "deb http://repo.mysql.com/apt/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} mysql-{{ mysql_version }}"
+        state: present
+        filename: mysql
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install MySQL server
+      apt:
+        name: mysql-server
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start MySQL service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian"
+
+- name: Install MariaDB
+  block:
+    - name: Add MariaDB repository
+      apt_repository:
+        repo: "deb [arch=amd64] http://mirror.rackspace.com/mariadb/repo/{{ mariadb_version }}/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main"
+        state: present
+        filename: mariadb
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install MariaDB server
+      apt:
+        name: mariadb-server
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start MariaDB service
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian"
+
+- name: Install PostgreSQL
+  block:
+    - name: Add PostgreSQL repository
+      apt_repository:
+        repo: "deb http://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
+        state: present
+        filename: postgresql
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install PostgreSQL
+      apt:
+        name: "postgresql-{{ postgresql_version }}"
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start PostgreSQL service
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian"
+
+- name: Install Redis
+  block:
+    - name: Add Redis repository
+      apt_repository:
+        repo: ppa:redislabs/redis
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install Redis
+      apt:
+        name: redis-server
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start Redis service
+      service:
+        name: redis-server
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian"
+
+- name: Install ClickHouse
+  block:
+    - name: Add ClickHouse repository
+      apt_repository:
+        repo: "deb https://packages.clickhouse.com/deb stable main"
+        state: present
+        filename: clickhouse
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install ClickHouse
+      apt:
+        name: clickhouse-server
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start ClickHouse service
+      service:
+        name: clickhouse-server
+        state: started
+        enabled: yes
+      when: ansible_os_family == "Debian" 
