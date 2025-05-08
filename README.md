@@ -9,6 +9,7 @@ This Ansible playbook automates the installation of development tools and softwa
 - SSH access to the target computer (for remote installation)
 - For macOS: Xcode Command Line Tools
 - For Raspberry Pi: Raspberry Pi OS (64-bit)
+- For Ubuntu: Ubuntu 22.04 LTS or newer
 
 ## Usage
 
@@ -41,6 +42,12 @@ This Ansible playbook automates the installation of development tools and softwa
    # Очистка временных файлов
    make clean
    ```
+
+## Supported Operating Systems
+
+- macOS (Darwin)
+- Raspberry Pi OS (64-bit)
+- Ubuntu 22.04 LTS or newer
 
 ## What will be installed
 
@@ -98,4 +105,5 @@ This Ansible playbook automates the installation of development tools and softwa
 - Postman
 
 ### Package Managers
-- Homebrew (macOS only) 
+- Homebrew (macOS only)
+- apt (Ubuntu/Raspberry Pi) 

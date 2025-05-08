@@ -7,8 +7,8 @@ help: ## Show this help message
 	@clear
 	@echo "Available commands:"
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[0;33m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
-	@echo "" 
-	
+	@echo ""
+
 ##@ Development
 check-ansible: ## Check if Ansible is installed
 	@which ansible >/dev/null 2>&1 || (echo "Error: Ansible is not installed" && exit 1)
@@ -24,12 +24,32 @@ check-ssh: ## Check SSH connection to remote host
 		echo "No remote host configured in inventory.ini"; \
 	fi
 
+check-os: ## Check if OS is supported
+	@if [ "$$(uname)" = "Darwin" ]; then \
+		echo "Detected macOS"; \
+	elif [ -f /etc/os-release ]; then \
+		. /etc/os-release; \
+		if [ "$$ID" = "ubuntu" ]; then \
+			echo "Detected Ubuntu $$VERSION_ID"; \
+		elif [ "$$ID" = "raspbian" ] || [ "$$ID" = "debian" ]; then \
+			if [ "$$(uname -m)" = "aarch64" ]; then \
+				echo "Detected Raspberry Pi OS"; \
+			else \
+				echo "Detected Debian"; \
+			fi; \
+		else \
+			echo "Error: Unsupported OS: $$ID $$VERSION_ID" && exit 1; \
+		fi; \
+	else \
+		echo "Error: Could not detect OS" && exit 1; \
+	fi
+
 ##@ Installation
-install-local: ## Install on local machine (127.0.0.1)
+install-local: check-os ## Install on local machine (127.0.0.1)
 	@echo "Installing on local machine..."
 	ansible-playbook -i inventory.ini main.yml
 
-install-remote: check-ssh ## Install on remote machine (requires IP in inventory.ini)
+install-remote: check-ssh check-os ## Install on remote machine (requires IP in inventory.ini)
 	@echo "Installing on remote machine..."
 	ansible-playbook -i inventory.ini main.yml
 
